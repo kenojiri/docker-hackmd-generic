@@ -1,0 +1,28 @@
+version: '2'
+ 
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: hackmd
+    volumes:
+      - db:/var/lib/mysql
+  web:
+    image: hackmdio/hackmd:1.0.1-ce
+    environment:
+      HMD_DB_URL: "mysql://root:mysql@db:3306/hackmd"
+    volumes:
+      - uploads:/hackmd/public/uploads
+  revproxy:
+    image: openresty/openresty:alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginxconf:/usr/local/openresty/nginx/conf:ro
+      - nginxlog:/var/nginx
+
+volumes:
+  db:
+  uploads:
+  nginxlog:

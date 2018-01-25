@@ -1,0 +1,14 @@
+version: '2'
+ 
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: hackmd
+  web:
+    image: hackmdio/hackmd:1.0.1-ce
+    ports:
+      - "3000:3000"
+    environment:
+      HMD_DB_URL: "mysql://root:mysql@db:3306/hackmd"
